@@ -26,9 +26,9 @@ export default {
 	    const ghRes = await fetch("https://api.github.com/graphql", {
 		method: "POST",
 		headers: {
-		    "Authorization": `Bearer ${env.GITHUB_TOKEN}`,
+		    "Authorization": `Bearer ${env.discus}`,
 		    "Content-Type": "application/json",
-		    "User-Agent": "Umebachidou-Comment-Stats-Worker"
+		    "User-Agent": "Umebachidou"
 		},
 		body: JSON.stringify({
 		    query,
