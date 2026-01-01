@@ -1,5 +1,5 @@
 (async () => {
-  const WORKER_URL = "https://YOUR-WORKER-URL.example.com";
+  const WORKER_URL = "https://umebachidou.mikan-yamano.workers.dev/";
 
   const counters = document.querySelectorAll("[data-comment-count]");
 
