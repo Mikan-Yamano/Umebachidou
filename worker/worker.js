@@ -8,6 +8,20 @@ export default {
 		return json({ error: "Missing page parameter" }, 400);
 	    }
 
+	    // Parse discussion number from GitHub URL
+      let discussionNumber;
+      try {
+        const pathname = new URL(page).pathname;
+        discussionNumber = Number(pathname.split("/").pop());
+      } catch {
+        return json({ error: "Invalid discussion URL" }, 400);
+      }
+
+      if (!Number.isInteger(discussionNumber)) {
+        return json({ error: "Invalid discussion number" }, 400);
+      }
+
+
 	    const query = `
 query ($page: String!) {
   repository(owner: "Mikan-Yamano", name: "Umebachidou") {
@@ -32,56 +46,64 @@ query ($page: String!) {
 		    "Content-Type": "application/json",
 		    "User-Agent": "Umebachidou"
 		},
-		body: JSON.stringify({
-		    query,
-		    variables: { page }
-		})
-	    });
+body: JSON.stringify({
+          query,
+          variables: { number: discussionNumber }
+        })
+      });
 
-	    if (!ghRes.ok) {
-		const text = await ghRes.text();
-		return json({ error: "GitHub API error", detail: text }, 500);
-	    }
+      if (!ghRes.ok) {
+        const text = await ghRes.text();
+        return json({ error: "GitHub API error", detail: text }, 500);
+      }
 
-	    const data = await ghRes.json();
-	    const discussion = data?.data?.repository?.discussion;
+      const data = await ghRes.json();
 
-	    // if (!discussion) {
-	    // 	return json({
-	    // 	    page,
-	    // 	    totalComments: 0,
-	    // 	    reactions: {}
-	    // 	});
-	    // }
+      if (data.errors) {
+        return json({
+          error: "GraphQL error",
+          details: data.errors
+        }, 500);
+      }
 
-	    const reactions = {};
-	    for (const r of discussion.reactions.nodes) {
-		reactions[r.content] = (reactions[r.content] || 0) + 1;
-	    }
-	    
-	    return json({
-		page,
-		totalComments: discussion.comments.totalCount,
-		reactions
-	    });
+      const discussion = data?.data?.repository?.discussion;
 
-	} catch (err) {
-	    return json({
-		error: "Worker exception",
-		message: err.message
-	    }, 500);
-	}
+      if (!discussion) {
+        return json({
+          error: "Discussion not found",
+          page
+        }, 404);
+      }
+
+      const reactions = {};
+      for (const r of discussion.reactions.nodes) {
+        reactions[r.content] = (reactions[r.content] || 0) + 1;
+      }
+
+      return json({
+        page,
+        discussionNumber,
+        totalComments: discussion.comments.totalCount,
+        reactions
+      });
+
+    } catch (err) {
+      return json({
+        error: "Worker exception",
+        message: err.message
+      }, 500);
     }
+  }
 };
 
 function json(obj, status = 200) {
-    return new Response(JSON.stringify(obj), {
-	status,
-	headers: {
-	    "Content-Type": "application/json",
-	    "Access-Control-Allow-Origin": "*"
-	}
-    });
+  return new Response(JSON.stringify(obj), {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    }
+  });
 }
 
 // async function getCommentCountFromIssue() {
