@@ -10,7 +10,7 @@ export default {
 
 	    const query = `
         query ($page: String!) {
-          repository(owner: "mikan-yamano", name: "Umebachidou") {
+          repository(owner: "Mikan-Yamano", name: "Umebachidou") {
             discussion(url: $page) {
               comments {
                 totalCount
