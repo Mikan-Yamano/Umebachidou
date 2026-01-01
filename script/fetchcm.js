@@ -5,8 +5,6 @@
 //       d.totalComments;
 //   });
 
-<script>
-  const el = document.querySelector(".comment-count");
-  console.log("element =", el);
-  if (el) el.textContent = "FOUND";
-</script>
+const el = document.querySelector(".comment-count");
+console.log("element =", el);
+if (el) el.textContent = "FOUND";
