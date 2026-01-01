@@ -1,0 +1,45 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const formatFilter = document.getElementById('formatFilter');
+  const sortSelect = document.getElementById('sortSelect');
+  const tbody = document.getElementById('versionTableBody');
+
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  function updateTable() {
+    let filtered = rows;
+
+    // FILTER
+    const format = formatFilter.value;
+    if (format !== 'all') {
+      filtered = filtered.filter(row =>
+        row.cells[0].textContent === format
+      );
+    }
+
+    // SORT
+    const [key, order] = sortSelect.value.split('-');
+
+    filtered.sort((a, b) => {
+      let valA, valB;
+
+      if (key === 'year') {
+        valA = parseInt(a.cells[1].textContent, 10);
+        valB = parseInt(b.cells[1].textContent, 10);
+      } else if (key === 'publisher') {
+        valA = a.cells[2].textContent.toLowerCase();
+        valB = b.cells[2].textContent.toLowerCase();
+      }
+
+      if (valA < valB) return order === 'asc' ? -1 : 1;
+      if (valA > valB) return order === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    // RENDER
+    tbody.innerHTML = '';
+    filtered.forEach(row => tbody.appendChild(row));
+  }
+
+  formatFilter.addEventListener('change', updateTable);
+  sortSelect.addEventListener('change', updateTable);
+});

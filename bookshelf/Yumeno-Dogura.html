@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <title>梅鉢堂|ドグラ・マグラ</title>
+  </head>
+  <style>
+    body {
+	background-image: url('../image/background.jpg');
+    }
+  </style>
+
+  <script src="../script/tab.js"></script>
+  <script src="../script/tablectl.js"></script>
+  
+  <body>
+    
+    <div class="text-box">
+      <header class="site-header">
+	<nav class="nav-buttons">
+	  <button><a href="../index.html"/>玄関</a></button>
+<button>本棚</button>
+<button>御礼</button>
+<button>便り</button>
+</nav>
+</header>
+
+
+<section class="book-info">
+  <h1>ドグラ・マグラ</h1>	  
+  <p>夢野久作 / 
+    初出：1935</p>
+</section>
+
+<section class="tab-section">
+  <div class="tabs">
+    <button class="tab active" data-tab="scene">場面</button>
+    <button class="tab" data-tab="versions">書誌</button>
+  </div>
+
+  <div class="tab-content active" id="scene">
+    <p>
+      共通ルート 
+    </p>
+  </div>
+  
+  <div class="tab-content" id="versions">
+    
+    <div class="table-controls">
+      <label>
+	並び替え：
+	<select id="sortSelect">
+	  <option value="year-asc">出版年：古い順</option>
+	  <option value="year-desc">出版年：新しい順</option>
+	  <!-- <option value="publisher-asc">Publisher A–Z</option> -->
+
+	</select>
+      </label>
+    </div>
+    
+    <table class="version-table">
+      <thead>
+        <tr>
+          <th>タイトル</th>
+          <th>出版年</th>
+          <th>出版社</th>
+	  <th>出版社ページ</th>
+	  <th>ISBN-13</th>
+          <th>コメント</th>
+	  <th>おすすめ数</th>
+        </tr>
+      </thead>
+      <tbody id="versionTableBody">
+	
+	 <tr data-version="dogura-kadokawa76">
+          <td>ドグラ・マグラ(角川文庫)</td>
+          <td>1976</td>
+          <td>角川書店</td>
+	  <td><a href="https://www.kadokawa.co.jp/product/199999136603/"/>上</a>/<a href="https://www.kadokawa.co.jp/product/199999136604/"/>下</a></td>
+          <td>9784041366035（上）
+	    <p>9784041366042（下）</p></td>
+          <td>
+            <a class="comment-btn"
+               href="../comment/Yumeno-Dogura/01.html">
+              みんなのコメント
+            </a>
+          </td>
+	  <td>
+	    <button class="like-btn"
+		    data-version="01">
+	      ❤️
+	    </button>
+	    <span class="like-count"
+		  id="01">0</span>
+	  </td>
+</tr>
+
+<tr>
+  <td>夢野久作全集 ９</td>
+  <td>1992</td>
+  <td>筑摩書房</td>
+  <td><a href="https://www.chikumashobo.co.jp/product/9784480026798/"/>リンク</a></td>
+<td>9784480026798</td>
+<td>
+  <a class="comment-btn"
+     href="../comment/Yumeno-Dogura/02.html">
+    みんなのコメント
+  </a>
+</td>
+<td>
+  <button class="like-btn"
+	  data-version="02">
+    ❤️
+  </button>
+  <span class="like-count"
+	id="02">0</span>
+</td>
+</tr>
+
+
+	
+      </tbody>
+    </table>
+    
+</section>
+</div>
+
+</body>
+</html>
