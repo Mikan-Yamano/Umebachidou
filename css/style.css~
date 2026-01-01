@@ -36,12 +36,6 @@ body {
   backdrop-filter: blur(6px);
 }
 
-.logo {
-  color: white;
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
 .nav-buttons {
   display: flex;
   gap: 1rem;
@@ -117,22 +111,6 @@ body {
   color: #777;
 }
 
-.versions {
-  margin-top: 3rem;
-}
-
-.version {
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-}
-
-.version h3 {
-  margin-top: 0;
-}
-
 .comments {
   margin-top: 1.5rem;
 }
@@ -175,4 +153,37 @@ body {
 
 .version-meta li {
   margin-bottom: 0.4rem;
+}
+
+.table-controls {
+  display: flex;
+  gap: 1.5rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.table-controls label {
+  font-size: 0.95rem;
+}
+
+.table-controls select {
+  margin-left: 0.4rem;
+  padding: 0.3rem;
+}
+
+.like-btn {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.like-btn:hover {
+  background: #f2f2f2;
+}
+
+.like-count {
+  margin-left: 0.4rem;
+  font-weight: bold;
 }

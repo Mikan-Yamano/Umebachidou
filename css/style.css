@@ -171,19 +171,3 @@ body {
   padding: 0.3rem;
 }
 
-.like-btn {
-  padding: 0.3rem 0.6rem;
-  border: 1px solid #ccc;
-  background: #fff;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.like-btn:hover {
-  background: #f2f2f2;
-}
-
-.like-count {
-  margin-left: 0.4rem;
-  font-weight: bold;
-}
