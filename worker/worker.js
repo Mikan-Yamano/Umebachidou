@@ -1,22 +1,22 @@
-export default {
+function giscusPathname(pageUrl) {
+    const u = new URL(pageUrl);
 
-    function giscusPathname(pageUrl) {
-	const u = new URL(pageUrl);
+    let path = u.pathname;
 
-	let path = u.pathname;
-
-	// Remove leading slash
-	if (path.startsWith("/")) {
-	    path = path.slice(1);
-	}
-
-	// Remove trailing .html
-	if (path.endsWith(".html")) {
-	    path = path.slice(0, -5);
-	}
-
-	return path;
+    // Remove leading slash
+    if (path.startsWith("/")) {
+	path = path.slice(1);
     }
+
+    // Remove trailing .html
+    if (path.endsWith(".html")) {
+	path = path.slice(0, -5);
+    }
+
+    return path;
+}
+
+export default {
     
     async fetch(request, env) {
 	try {
