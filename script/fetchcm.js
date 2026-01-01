@@ -25,15 +25,14 @@
     }
 }
 
- // Wait until the DOM stops changing
- const observer = new MutationObserver(() => {
-     observer.disconnect();
-     updateCounts();
- });
+var observer = new MutationObserver(function () {
+    observer.disconnect();
+    updateCounts();
+  });
 
- observer.observe(document.documentElement, {
-     childList: true,
-     subtree: true
- });
-
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+})();
 
