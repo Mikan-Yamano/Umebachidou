@@ -9,19 +9,21 @@ export default {
 	    }
 
 	    const query = `
-        query ($page: String!) {
-          repository(owner: "Mikan-Yamano", name: "Umebachidou") {
-            discussion(url: $page) {
-              comments {
-                totalCount
-              }
-              reactions {
-                content
-              }
-            }
-          }
+query ($page: String!) {
+  repository(owner: "Mikan-Yamano", name: "Umebachidou") {
+    discussion(url: $page) {
+      comments {
+        totalCount
+      }
+      reactions(first: 100) {
+        nodes {
+          content
         }
-      `;
+      }
+    }
+  }
+}
+`;
 
 	    const ghRes = await fetch("https://api.github.com/graphql", {
 		method: "POST",
@@ -53,10 +55,10 @@ export default {
 	    }
 
 	    const reactions = {};
-	    for (const r of discussion.reactions) {
+	    for (const r of discussion.reactions.nodes) {
 		reactions[r.content] = (reactions[r.content] || 0) + 1;
 	    }
-
+	    
 	    return json({
 		page,
 		totalComments: discussion.comments.totalCount,
