@@ -13,7 +13,12 @@ const statsCache = new Map();
             const res = await fetch(`${WORKER_URL}?page=${encodeURIComponent(pageUrl)}`);
             if (!res.ok) return null;
             return await res.json();
+
+	    // Store in cache
+            statsCache.set(pageUrl, data);
+            return data;
 	} catch {
+	    console.error('Error fetching stats:', error);
             return null;
 	}
     }
@@ -37,8 +42,15 @@ const statsCache = new Map();
             row.dataset.score = score;
 
             /* ---- update UI ---- */
-	    row.querySelector("[data-comment-count]").textContent = comments;
-            row.querySelector("[data-reaction-score]").textContent = score;
+            const commentElement = row.querySelector("[data-comment-count]");
+            const scoreElement = row.querySelector("[data-reaction-score]");
+            
+            if (commentElement) {
+                commentElement.textContent = comments;
+            }
+            if (scoreElement) {
+                scoreElement.textContent = score;
+            }
 	}
     }
 
@@ -47,23 +59,31 @@ const statsCache = new Map();
         updateReactions();
     }
 
-    // Debounce function
+  // Debounce function
     function debouncedUpdate() {
         clearTimeout(updateTimeout);
-        updateTimeout = setTimeout(updateAll, 100);
+        updateTimeout = setTimeout(() => {
+            updateAllCounters();
+        }, 100);
+    }
+
+    // Set up polling for updates (optional)
+    function startPolling(interval = 30000) { // 30 seconds
+        setInterval(() => {
+            // Clear cache to force fresh data
+            statsCache.clear();
+            updateAllCounters();
+        }, interval);
     }
 
     // Initial update
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', debouncedUpdate);
+        document.addEventListener('DOMContentLoaded', () => {
+            debouncedUpdate();
+            // Optional: start polling for updates
+            // startPolling();
+        });
     } else {
         debouncedUpdate();
     }
-
-    // Update on changes
-    new MutationObserver(debouncedUpdate).observe(document.documentElement, {
-        childList: true,
-        subtree: true
-    });
-})();
 
