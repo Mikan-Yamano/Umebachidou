@@ -1,106 +1,79 @@
 (function() {
     const WORKER_URL = "https://umebachidou.mikan-yamano.workers.dev/";
-    // let updateTimeout;
-    // let observer;
+    let updateTimeout;
 
-    async function updateCounts() {
-        // Update comment counts
-        const commentCounters = document.querySelectorAll("[data-comment-count]");
-        await updateCommentCounts(commentCounters);
+    async function updateComments() {
+        const counters = document.querySelectorAll("[data-comment-count]");
         
-        // Update reaction scores
-        const reactionCounters = document.querySelectorAll("[data-reaction-score]");
-        await updateReactionScores(reactionCounters);
-    }
-
-    async function updateCommentCounts(counters) {
         for (const el of counters) {
             const pageUrl = el.dataset.page || window.location.href;
-
+            
             try {
-                const res = await fetch(
-                    `${WORKER_URL}?page=${encodeURIComponent(pageUrl)}&type=comments`
-                );
-
+                const res = await fetch(`${WORKER_URL}?page=${encodeURIComponent(pageUrl)}`);
                 if (!res.ok) continue;
-
+                
                 const data = await res.json();
-                
-                // Display total comments
-                el.textContent = typeof data.totalComments === 'number'
-                    ? data.totalComments.toString()
-                    : "0";
-                
-                // Store in data attribute for styling
-                el.dataset.count = data.totalComments || "0";
-                
-            } catch (error) {
-                console.error('Error updating comment count:', error);
+                el.textContent = data.totalComments?.toString() || "0";
+            } catch {
                 el.textContent = "0";
             }
         }
     }
 
-    async function updateReactionScores(counters) {
+    async function updateReactions() {
+        const counters = document.querySelectorAll("[data-reaction-score]");
+        
         for (const el of counters) {
             const pageUrl = el.dataset.page || window.location.href;
-
+            
             try {
-                const res = await fetch(
-                    `${WORKER_URL}?page=${encodeURIComponent(pageUrl)}&type=reactions`
-                );
-
+                const res = await fetch(`${WORKER_URL}?page=${encodeURIComponent(pageUrl)}`);
                 if (!res.ok) continue;
-
+                
                 const data = await res.json();
                 
-                // Calculate reaction scores
-                let thumbUps = 0;
-                let thumbDowns = 0;
-                let totalScore = 0;
-                
-                if (data.reactions && Array.isArray(data.reactions)) {
-                    data.reactions.forEach(reaction => {
-                        if (reaction.content === '+1' || reaction.content === 'thumbs_up' || reaction.content === '👍') {
-                            thumbUps += 1;
-                        } else if (reaction.content === '-1' || reaction.content === 'thumbs_down' || reaction.content === '👎') {
-                            thumbDowns += 1;
+                // Calculate plain score
+                let score = 0;
+                if (data.reactions) {
+                    data.reactions.forEach(r => {
+                        if (r.content === '+1' || r.content === 'thumbs_up' || r.content === '👍') {
+                            score += 1;
+                        } else if (r.content === '-1' || r.content === 'thumbs_down' || r.content === '👎') {
+                            score -= 1;
                         }
                     });
-                    totalScore = thumbUps - thumbDowns;
                 }
+                
+                // Plain score display (e.g., "+3" or "-2")
+                el.textContent = score > 0 ? `+${score}` : score.toString();
+            } catch {
+                el.textContent = "0";
+            }
+        }
+    }
 
-		el.textContent = totalScore > 0 ? `+${totalScore}` : totalScore.toString();
+    function updateAll() {
+        updateComments();
+        updateReactions();
+    }
 
-		// Store in data attributes for styling
-                el.dataset.thumbUps = thumbUps;
-                el.dataset.thumbDowns = thumbDowns;
-                el.dataset.totalScore = totalScore;
+    // Debounce function
+    function debouncedUpdate() {
+        clearTimeout(updateTimeout);
+        updateTimeout = setTimeout(updateAll, 100);
+    }
 
-		
-		// Debounced update function
-		function debouncedUpdate() {
-		    clearTimeout(updateTimeout);
-		    updateTimeout = setTimeout(updateCombinedCounts, 100);
-		}
+    // Initial update
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', debouncedUpdate);
+    } else {
+        debouncedUpdate();
+    }
 
-		function init() {
-		    // Initial update
-		    updateCombinedCounts();
-
-		    // Set up observer
-		    if (observer) observer.disconnect();
-		    observer = new MutationObserver(debouncedUpdate);
-		    observer.observe(document.documentElement, {
-			childList: true,
-			subtree: true
-		    });
-		}
-
-		// Start when DOM is ready
-		if (document.readyState === 'loading') {
-		    document.addEventListener('DOMContentLoaded', init);
-		} else {
-		    init();
-		}
+    // Update on changes
+    new MutationObserver(debouncedUpdate).observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+})();
 		
