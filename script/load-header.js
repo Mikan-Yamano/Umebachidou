@@ -1,6 +1,7 @@
 class SiteHeader extends HTMLElement {
     connectedCallback() {
 	this.innerHTML = `
+      <base href="/Umebachidou/">
       <header class="site-header">
       <nav class="nav-buttons">
 	<button><a href="/index.html"/>玄関</a></button>
