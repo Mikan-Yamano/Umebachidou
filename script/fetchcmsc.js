@@ -42,53 +42,6 @@ const statsCache = new Map();
 	}
     }
 
-    // async function updateComments() {
-    //     const counters = document.querySelectorAll("[data-comment-count]");
-    
-    //     for (const el of counters) {
-    //         const pageUrl = el.dataset.page || window.location.href;
-    
-    //         try {
-    //             const res = await fetch(`${WORKER_URL}?page=${encodeURIComponent(pageUrl)}`);
-    //             if (!res.ok) continue;
-    
-    //             const data = await res.json();
-    //             el.textContent = data.totalComments?.toString() || "0";
-    //         } catch {
-    //             el.textContent = "0";
-    //         }
-    //     }
-    // }
-
-    // async function updateReactions() {
-    //     const counters = document.querySelectorAll("[data-reaction-score]");
-    
-    //     for (const el of counters) {
-    //         const pageUrl = el.dataset.page || window.location.href;
-    
-    //         let score = 0;
-    
-    //         try {
-    // 		const res = await fetch(`${WORKER_URL}?page=${encodeURIComponent(pageUrl)}`);
-    // 		if (!res.ok) continue;
-
-    // 		const data = await res.json();
-
-    // 		let score = 0;
-
-    // 		if (data?.reactions) {
-    //                 const ups = data.reactions.THUMBS_UP || 0;
-    //                 const downs = data.reactions.THUMBS_DOWN || 0;
-    //                 score = ups - downs;
-    // 		}
-
-    // 		el.textContent = score.toString();
-    //         } catch {
-    // 		el.textContent = "0";
-    //         }
-    // 	}
-    // }
-
     function updateAll() {
         updateComments();
         updateReactions();
@@ -108,9 +61,9 @@ const statsCache = new Map();
     }
 
     // Update on changes
-    new MutationObserver(debouncedUpdate).observe(document.documentElement, {
-        childList: true,
-        subtree: true
-    });
-})();
+//     new MutationObserver(debouncedUpdate).observe(document.documentElement, {
+//         childList: true,
+//         subtree: true
+//     });
+// })();
 
