@@ -87,3 +87,5 @@ const statsCache = new Map();
         debouncedUpdate();
     }
 
+    })();
+
