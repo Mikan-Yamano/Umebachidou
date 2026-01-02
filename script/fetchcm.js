@@ -1,7 +1,6 @@
 (async function() {
     const WORKER_URL = "https://umebachidou.mikan-yamano.workers.dev/";
 
-    // Define the function first
     async function updateCounts() {
         const counters = document.querySelectorAll("[data-comment-count]");
 

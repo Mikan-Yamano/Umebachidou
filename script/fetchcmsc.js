@@ -1,0 +1,106 @@
+(function() {
+    const WORKER_URL = "https://umebachidou.mikan-yamano.workers.dev/";
+    // let updateTimeout;
+    // let observer;
+
+    async function updateCounts() {
+        // Update comment counts
+        const commentCounters = document.querySelectorAll("[data-comment-count]");
+        await updateCommentCounts(commentCounters);
+        
+        // Update reaction scores
+        const reactionCounters = document.querySelectorAll("[data-reaction-score]");
+        await updateReactionScores(reactionCounters);
+    }
+
+    async function updateCommentCounts(counters) {
+        for (const el of counters) {
+            const pageUrl = el.dataset.page || window.location.href;
+
+            try {
+                const res = await fetch(
+                    `${WORKER_URL}?page=${encodeURIComponent(pageUrl)}&type=comments`
+                );
+
+                if (!res.ok) continue;
+
+                const data = await res.json();
+                
+                // Display total comments
+                el.textContent = typeof data.totalComments === 'number'
+                    ? data.totalComments.toString()
+                    : "0";
+                
+                // Store in data attribute for styling
+                el.dataset.count = data.totalComments || "0";
+                
+            } catch (error) {
+                console.error('Error updating comment count:', error);
+                el.textContent = "0";
+            }
+        }
+    }
+
+    async function updateReactionScores(counters) {
+        for (const el of counters) {
+            const pageUrl = el.dataset.page || window.location.href;
+
+            try {
+                const res = await fetch(
+                    `${WORKER_URL}?page=${encodeURIComponent(pageUrl)}&type=reactions`
+                );
+
+                if (!res.ok) continue;
+
+                const data = await res.json();
+                
+                // Calculate reaction scores
+                let thumbUps = 0;
+                let thumbDowns = 0;
+                let totalScore = 0;
+                
+                if (data.reactions && Array.isArray(data.reactions)) {
+                    data.reactions.forEach(reaction => {
+                        if (reaction.content === '+1' || reaction.content === 'thumbs_up' || reaction.content === '👍') {
+                            thumbUps += 1;
+                        } else if (reaction.content === '-1' || reaction.content === 'thumbs_down' || reaction.content === '👎') {
+                            thumbDowns += 1;
+                        }
+                    });
+                    totalScore = thumbUps - thumbDowns;
+                }
+
+		el.textContent = totalScore > 0 ? `+${totalScore}` : totalScore.toString();
+
+		// Store in data attributes for styling
+                el.dataset.thumbUps = thumbUps;
+                el.dataset.thumbDowns = thumbDowns;
+                el.dataset.totalScore = totalScore;
+
+		
+		// Debounced update function
+		function debouncedUpdate() {
+		    clearTimeout(updateTimeout);
+		    updateTimeout = setTimeout(updateCombinedCounts, 100);
+		}
+
+		function init() {
+		    // Initial update
+		    updateCombinedCounts();
+
+		    // Set up observer
+		    if (observer) observer.disconnect();
+		    observer = new MutationObserver(debouncedUpdate);
+		    observer.observe(document.documentElement, {
+			childList: true,
+			subtree: true
+		    });
+		}
+
+		// Start when DOM is ready
+		if (document.readyState === 'loading') {
+		    document.addEventListener('DOMContentLoaded', init);
+		} else {
+		    init();
+		}
+		
