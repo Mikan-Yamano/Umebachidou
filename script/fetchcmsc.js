@@ -25,30 +25,19 @@
         
         for (const el of counters) {
             const pageUrl = el.dataset.page || window.location.href;
+            const data = await fetchPageData(pageUrl);
             
-            try {
-                const res = await fetch(`${WORKER_URL}?page=${encodeURIComponent(pageUrl)}`);
-                if (!res.ok) continue;
-                
-                const data = await res.json();
-                
-                // Calculate plain score
-                let score = 0;
-                if (data.reactions) {
-                    data.reactions.forEach(r => {
-                        if (r.content === '+1' || r.content === 'THUMBS_UP') {
-                            score += 1;
-                        } else if (r.content === '-1' || r.content === 'THUMBS_DOWN') {
-                            score -= 1;
-                        }
-                    });
-                }
-                
-                // Plain score display (e.g., "+3" or "-2")
-                el.textContent = score > 0 ? `+${score}` : score.toString();
-            } catch {
-                el.textContent = "0";
+            let score = 0;
+            
+            // Handle the reaction format: {"THUMBS_UP":1,"THUMBS_DOWN":1}
+            if (data?.reactions) {
+                const ups = data.reactions.THUMBS_UP || 0;
+                const downs = data.reactions.THUMBS_DOWN || 0;
+                score = ups - downs;
             }
+            
+            // Plain score display
+            el.textContent = score > 0 ? `+${score}` : score.toString();
         }
     }
 
