@@ -61,9 +61,9 @@ const statsCache = new Map();
     }
 
     // Update on changes
-//     new MutationObserver(debouncedUpdate).observe(document.documentElement, {
-//         childList: true,
-//         subtree: true
-//     });
-// })();
+    new MutationObserver(debouncedUpdate).observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+})();
 

@@ -19,82 +19,75 @@
   <body>
     
     <div class="text-box">
-      <header class="site-header">
-	<nav class="nav-buttons">
-	  <button><a href="../index.html"/>玄関</a></button>
-<button>本棚</button>
-<button>御礼</button>
-<button>便り</button>
-</nav>
-</header>
+      <script src="/script/load-header.js" defer></script>
+      <site-header></site-header>
 
+      <section class="book-info">
+	<h1>ドグラ・マグラ</h1>	  
+	<p>夢野久作 / 
+	  初出：1935</p>
+      </section>
 
-<section class="book-info">
-  <h1>ドグラ・マグラ</h1>	  
-  <p>夢野久作 / 
-    初出：1935</p>
-</section>
+      <section class="tab-section">
+	<div class="tabs">
+	  <button class="tab active" data-tab="scene">場面</button>
+	  <button class="tab" data-tab="versions">書誌</button>
+	</div>
 
-<section class="tab-section">
-  <div class="tabs">
-    <button class="tab active" data-tab="scene">場面</button>
-    <button class="tab" data-tab="versions">書誌</button>
-  </div>
-
-  <div class="tab-content active" id="scene">
-    <p>
-      共通ルート 
-    </p>
-  </div>
-  
-  <div class="tab-content" id="versions">
-    
-    <div class="table-controls">
-      <label>
-	並び替え：
-	<select id="sortSelect">
-	  <option value="year-asc">出版年：古い順</option>
-	  <option value="year-desc">出版年：新しい順</option>
-	  <!-- <option value="publisher-asc">Publisher A–Z</option> -->
-
-	</select>
-      </label>
-    </div>
-    
-    <table class="version-table">
-      <thead>
-        <tr>
-          <th>タイトル</th>
-          <th>出版年</th>
-          <th>出版社</th>
-	  <th>出版社ページ</th>
-	  <th>ISBN-13</th>
-          <th>コメント</th>
-	  <th>得点</th>
-        </tr>
-      </thead>
-      <tbody id="versionTableBody">
+	<div class="tab-content active" id="scene">
+	  <p>
+	    共通ルート 
+	  </p>
+	</div>
 	
-	 <tr class="book-version"
-    data-page="https://mikan-yamano.github.io/Umebachidou/comment/Yumeno-Dogura/01.html">
-          <td>ドグラ・マグラ(角川文庫)</td>
-          <td>1976</td>
-          <td>角川書店</td>
-	  <td><a href="https://www.kadokawa.co.jp/product/199999136603/"/>上</a>/<a href="https://www.kadokawa.co.jp/product/199999136604/"/>下</a></td>
-          <td>9784041366035（上）
-	    <p>9784041366042（下）</p></td>
-          <td>
-            <a class="comment-btn"
-               href="../comment/Yumeno-Dogura/01.html">
-              みんなのコメント <span data-comment-count
-             <!-- data-page="https://mikan-yamano.github.io/Umebachidou/comment/Yumeno-Dogura/01.html" -->>
+	<div class="tab-content" id="versions">
+	  
+	  <div class="table-controls">
+	    <label>
+	      並び替え：
+	      <select id="sortSelect">
+		<option value="year-asc">出版年：古い順</option>
+		<option value="year-desc">出版年：新しい順</option>
+		<!-- <option value="publisher-asc">Publisher A–Z</option> -->
+
+	      </select>
+	    </label>
+	  </div>
+	  
+	  <table class="version-table">
+	    <thead>
+              <tr>
+		<th>タイトル</th>
+		<th>出版年</th>
+		<th>出版社</th>
+		<th>出版社ページ</th>
+		<th>ISBN-13</th>
+		<th>コメント</th>
+		<th>得点</th>
+              </tr>
+	    </thead>
+	    <tbody id="versionTableBody">
+	      
+	      <tr class="book-version"
+		  data-page="https://mikan-yamano.github.io/Umebachidou/comment/Yumeno-Dogura/01.html">
+		<td>ドグラ・マグラ(角川文庫)</td>
+		<td>1976</td>
+		<td>角川書店</td>
+		<td><a href="https://www.kadokawa.co.jp/product/199999136603/"/>上</a>/<a href="https://www.kadokawa.co.jp/product/199999136604/"/>下</a></td>
+<td>9784041366035（上）
+  <p>9784041366042（下）</p></td>
+<td>
+  <a class="comment-btn"
+     href="../comment/Yumeno-Dogura/01.html">
+    みんなのコメント <span data-comment-count
+			   <!-- data-page="https://mikan-yamano.github.io/Umebachidou/comment/Yumeno-Dogura/01.html" -->>
       0
     </span>
-            </a>
-          </td>
-	  <td>
-	  <span data-reaction-score <!-- data-page="https://mikan-yamano.github.io/Umebachidou/comment/Yumeno-Dogura/01.html" -->>0</span>
-	  </td>
+  </a>
+</td>
+<td>
+  <span data-reaction-score <!-- data-page="https://mikan-yamano.github.io/Umebachidou/comment/Yumeno-Dogura/01.html" -->>0</span>
+</td>
 </tr>
 
 <tr>
@@ -115,10 +108,10 @@
 </tr>
 
 
-	
-      </tbody>
-    </table>
-    
+
+</tbody>
+</table>
+
 </section>
 </div>
 
