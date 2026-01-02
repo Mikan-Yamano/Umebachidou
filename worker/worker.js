@@ -36,18 +36,18 @@ export default {
 	    }
 
 	     // ========== CACHE LOGIC START ==========
-            // // Generate cache key from page URL
-            // const cacheKey = `discussion:${pathname}`;
+            // Generate cache key from page URL
+            const cacheKey = `discussion:${pathname}`;
             
-            // // Try to get from KV cache first
-            // const cachedData = await env.COMMENTS_CACHE.get(cacheKey, { type: "json" });
+            // Try to get from KV cache first
+            const cachedData = await env.COMMENTS_CACHE.get(cacheKey, { type: "json" });
             
-            // if (cachedData) {
-            //     console.log(`Cache HIT for: ${pathname}`);
-            //     return json(cachedData);
-            // }
+            if (cachedData) {
+                console.log(`Cache HIT for: ${pathname}`);
+                return json(cachedData);
+            }
             
-            // console.log(`Cache MISS for: ${pathname}`);
+            console.log(`Cache MISS for: ${pathname}`);
             // ========== CACHE LOGIC END ==========
 	    
 	    //Search GitHub Discussions by pathname token
@@ -96,14 +96,19 @@ export default {
 
 	    const discussionNode = searchData?.data?.search?.nodes?.[0];
 
-	    if (!discussionNode) {
-		return json({
-		    page,
-		    pathname,
-		    totalComments: 0,
-		    reactions: {}
-		});
-	    }
+	      if (!discussionNode) {
+                // Cache empty result for 10 minutes
+                const emptyResult = {
+                    page,
+                    pathname,
+                    totalComments: 0,
+                    reactions: {}
+                };
+                await env.COMMENTS_CACHE.put(cacheKey, JSON.stringify(emptyResult), {
+                    expirationTtl: 600 // 10 minutes for empty results
+                });
+                return json(emptyResult);
+            }
 
 	    const discussionNumber = discussionNode.number;
 
@@ -155,46 +160,74 @@ export default {
 		);
 	    }
 
-	    const discussion =
-		  statsData?.data?.repository?.discussion;
+	    const discussion = statsData?.data?.repository?.discussion;
 
 	    if (!discussion) {
-		return json({
-		    page,
-		    pathname,
-		    totalComments: 0,
-		    reactions: {}
-		});
-	    }
+                const emptyResult = {
+                    page,
+                    pathname,
+                    totalComments: 0,
+                    reactions: {}
+                };
+                await env.COMMENTS_CACHE.put(cacheKey, JSON.stringify(emptyResult), {
+                    expirationTtl: 600 // 10 minutes
+                });
+                return json(emptyResult);
+            }
 
 	    const reactions = {};
 	    for (const r of discussion.reactions.nodes) {
 		reactions[r.content] = (reactions[r.content] || 0) + 1;
 	    }
 
-	    return json({
-		page,
-		pathname,
-		discussionNumber,
-		totalComments: discussion.comments.totalCount,
-		reactions
-	    });
+	    const result = {
+                page,
+                pathname,
+                discussionNumber,
+                totalComments: discussion.comments.totalCount,
+                reactions
+            };
 
-	} catch (err) {
-	    return json(
-		{ error: "Worker exception", message: err.message },
-		500
-	    );
-	}
+            // ========== CACHE SUCCESS RESULT ==========
+            // Cache successful results for 5 minutes (adjust as needed)
+            await env.COMMENTS_CACHE.put(cacheKey, JSON.stringify(result), {
+                expirationTtl: 300 // 5 minutes = 300 seconds
+            });
+            // ==========================================
+
+            return json(result);
+
+        } catch (err) {
+            return json(
+                { error: "Worker exception", message: err.message },
+                500
+            );
+        }
     }
 };
+
+// Helper function to cache error responses briefly
+async function cacheErrorResponse(env, cacheKey, pathname) {
+    const errorResult = {
+        pathname,
+        totalComments: 0,
+        reactions: {},
+        cachedError: true
+    };
+    // Cache errors for only 60 seconds to retry soon
+    await env.COMMENTS_CACHE.put(cacheKey, JSON.stringify(errorResult), {
+        expirationTtl: 60
+    });
+}
 
 function json(obj, status = 200) {
     return new Response(JSON.stringify(obj), {
 	status,
 	headers: {
 	    "Content-Type": "application/json",
-	    "Access-Control-Allow-Origin": "*"
+	    "Access-Control-Allow-Origin": "*",
+	     // Add cache-control headers for browser/CDN caching
+            "Cache-Control": "public, max-age=60, stale-while-revalidate=300"
 	}
     });
 }

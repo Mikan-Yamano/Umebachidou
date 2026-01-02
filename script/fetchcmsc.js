@@ -1,8 +1,14 @@
+const statsCache = new Map();
+
 (function() {
     const WORKER_URL = "https://umebachidou.mikan-yamano.workers.dev/";
     let updateTimeout;
 
     async function fetchStatsForPage(pageUrl) {
+	if (statsCache.has(pageUrl)) {
+            return statsCache.get(pageUrl);
+	}
+
 	try {
             const res = await fetch(`${WORKER_URL}?page=${encodeURIComponent(pageUrl)}`);
             if (!res.ok) return null;

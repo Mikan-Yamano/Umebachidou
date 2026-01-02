@@ -1,3 +1,7 @@
 name = "umebachidou"
 main = "worker/worker.js"
 compatibility_date = "2025-10-01"
+
+kv_namespaces = [
+  { binding = "COMMENTS_CACHE", id = "Umebachi" }
+]
