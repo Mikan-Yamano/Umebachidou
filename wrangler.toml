@@ -3,5 +3,6 @@ main = "worker/worker.js"
 compatibility_date = "2025-10-01"
 
 kv_namespaces = [
-  { binding = "COMMENTS_CACHE", id = "Umebachi" }
+  { binding = "COMMENTS_CACHE", id = "df6dae76679145fca1a19bbcb9e8f59e"
+                 }
 ]
