@@ -36,9 +36,9 @@
                 let score = 0;
                 if (data.reactions) {
                     data.reactions.forEach(r => {
-                        if (r.content === '+1' || r.content === 'thumbs_up' || r.content === '👍') {
+                        if (r.content === '+1' || r.content === 'THUMBS_UP') {
                             score += 1;
-                        } else if (r.content === '-1' || r.content === 'thumbs_down' || r.content === '👎') {
+                        } else if (r.content === '-1' || r.content === 'THUMBS_DOWN') {
                             score -= 1;
                         }
                     });
