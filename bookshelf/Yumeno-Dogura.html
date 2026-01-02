@@ -49,8 +49,10 @@
 	      <select id="sortSelect">
 		<option value="year-asc">出版年：古い順</option>
 		<option value="year-desc">出版年：新しい順</option>
-		<!-- <option value="publisher-asc">Publisher A–Z</option> -->
-
+		<option value="comments-desc">Comments ↓</option>
+		<option value="comments-asc">Comments ↑</option>
+		<option value="score-desc">Reactions ↓</option>
+		<option value="score-asc">Reactions ↑</option>
 	      </select>
 	    </label>
 	  </div>
@@ -74,24 +76,26 @@
 		<td>ドグラ・マグラ(角川文庫)</td>
 		<td>1976</td>
 		<td>角川書店</td>
-		<td><a href="https://www.kadokawa.co.jp/product/199999136603/"/>上</a>/<a href="https://www.kadokawa.co.jp/product/199999136604/"/>下</a></td>
-<td>9784041366035（上）
-  <p>9784041366042（下）</p></td>
+		<td>
+		  <a href="https://www.kadokawa.co.jp/product/199999136603/"/>上</a>/<a href="https://www.kadokawa.co.jp/product/199999136604/"/>下</a>
+</td>
+<td>
+  9784041366035（上）
+  <p>9784041366042（下）</p>
+</td>
 <td>
   <a class="comment-btn"
      href="comment/Yumeno-Dogura/01.html">
-    みんなのコメント <span data-comment-count
-			   <!-- data-page="https://mikan-yamano.github.io/Umebachidou/comment/Yumeno-Dogura/01.html" -->>
-      0
-    </span>
+    みんなのコメント (<span data-comment-count>0</span>)
   </a>
 </td>
 <td>
-  <span data-reaction-score <!-- data-page="https://mikan-yamano.github.io/Umebachidou/comment/Yumeno-Dogura/01.html" -->>0</span>
+  <span data-reaction-score>0</span>
 </td>
 </tr>
 
-<tr>
+<tr class="book-version"
+    data-page="https://mikan-yamano.github.io/Umebachidou/comment/Yumeno-Dogura/02.html">
   <td>夢野久作全集 ９</td>
   <td>1992</td>
   <td>筑摩書房</td>
@@ -100,15 +104,13 @@
 <td>
   <a class="comment-btn"
      href="comment/Yumeno-Dogura/02.html">
-    みんなのコメント
+    みんなのコメント(<span data-comment-count>0</span>)
   </a>
 </td>
 <td>
-
+  <span data-reaction-score>0</span>
 </td>
 </tr>
-
-
 
 </tbody>
 </table>
