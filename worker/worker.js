@@ -34,8 +34,22 @@ export default {
 	    } catch {
 		return json({ error: "Invalid page URL" }, 400);
 	    }
-	    
 
+	     // ========== CACHE LOGIC START ==========
+            // // Generate cache key from page URL
+            // const cacheKey = `discussion:${pathname}`;
+            
+            // // Try to get from KV cache first
+            // const cachedData = await env.COMMENTS_CACHE.get(cacheKey, { type: "json" });
+            
+            // if (cachedData) {
+            //     console.log(`Cache HIT for: ${pathname}`);
+            //     return json(cachedData);
+            // }
+            
+            // console.log(`Cache MISS for: ${pathname}`);
+            // ========== CACHE LOGIC END ==========
+	    
 	    //Search GitHub Discussions by pathname token
 	    const searchQuery = `
         query ($q: String!) {
