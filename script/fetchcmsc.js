@@ -25,20 +25,28 @@
         
         for (const el of counters) {
             const pageUrl = el.dataset.page || window.location.href;
-            const data = await fetchPageData(pageUrl);
             
             let score = 0;
             
-            // Handle the reaction format: {"THUMBS_UP":1,"THUMBS_DOWN":1}
-            if (data?.reactions) {
-                const ups = data.reactions.THUMBS_UP || 0;
-                const downs = data.reactions.THUMBS_DOWN || 0;
-                score = ups - downs;
+            try {
+		const res = await fetch(`${WORKER_URL}?page=${encodeURIComponent(pageUrl)}`);
+		if (!res.ok) continue;
+
+		const data = await res.json();
+
+		let score = 0;
+
+		if (data?.reactions) {
+                    const ups = data.reactions.THUMBS_UP || 0;
+                    const downs = data.reactions.THUMBS_DOWN || 0;
+                    score = ups - downs;
+		}
+
+		el.textContent = score > 0 ? `+${score}` : score.toString();
+            } catch {
+		el.textContent = "0";
             }
-            
-            // Plain score display
-            el.textContent = score > 0 ? `+${score}` : score.toString();
-        }
+	}
     }
 
     function updateAll() {
@@ -65,4 +73,4 @@
         subtree: true
     });
 })();
-		
+
