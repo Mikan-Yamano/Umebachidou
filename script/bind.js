@@ -1,4 +1,4 @@
-(function () {  
+document.addEventListener('DOMContentLoaded', function() {
     const metaEl = document.getElementById("page-meta");
     if (!metaEl) return;  
     
