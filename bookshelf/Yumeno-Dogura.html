@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+  
   <head>
     <meta charset="UTF-8" />
     <base href="/Umebachidou/">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <title>梅鉢堂|ドグラ・マグラ</title>
   </head>
+  
   <style>
     body {
 	background-image: url('image/background.jpg');
@@ -16,20 +18,30 @@
   <script src="script/tab.js"></script>
   <script src="script/tablectl.js"></script>
   <script src="script/fetchcmsc.js"></script>
+  <script id="page-meta" type="application/json">
+    {
+	"title": "ドグラ・マグラ",
+	"author": "夢野久作",
+	"year": 1935,
+	"scenario": "共通ルート",
+	"pageUrl": "/bookshelf/Yumeno-Dogura.html"
+    }
+  </script>
+  <script src="script/bind.js"></script>
   
-  <body>
-    
+  <body>    
     <div class="text-box">
       <script src="script/load-header.js" defer></script>
       <site-header></site-header>
 
       <section class="book-info">
-	<h1>ドグラ・マグラ</h1>	  
+	<h1><span id="work-title">-</span></h1>	  
 	<p>夢野久作 / 
 	  初出：1935</p>
       </section>
 
       <section class="tab-section">
+	
 	<div class="tabs">
 	  <button class="tab active" data-tab="scene">場面</button>
 	  <button class="tab" data-tab="versions">書誌</button>
