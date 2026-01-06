@@ -3,8 +3,8 @@ const path = require('path');
 const { promises: fsPromises } = require('fs');
 
 async function generateAuthorIndex() {
-    const bookshelfDir = '/Umebachidou/bookshelf';  // Your bookshelf directory
-    const outputFile = '/Umebachidou/authors.html';  // Where to save the index
+    const bookshelfDir = 'bookshelf';  // Your bookshelf directory
+    const outputFile = 'authors.html';  // Where to save the index
     const authorIndex = {};  
     
     try {
