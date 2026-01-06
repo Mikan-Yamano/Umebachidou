@@ -33,7 +33,7 @@ async function generateAuthorIndex() {
 				      
 				      authorIndex[author].push({
 					  title: meta.title || 'Untitled',
-					  url: `/bookshelf/${file}`,  // Adjust path as needed
+					  url: 'bookshelf/${file}',  // Adjust path as needed
 					  date: meta.date || meta.year || 'Unknown',
 					  file: file
 				      });
