@@ -56,8 +56,8 @@ jobs:
 
     - name: Build static site
       run: |
-        if [ -f "/Umebachidou/script/authorindex.js" ]; then
-          node /Umebachidou/script/authorindex.js
+        if [ -f "script/authorindex.js" ]; then
+          node script/authorindex.js
         else
           echo "Warning: authorindex.js not found"
           # Create a minimal index if script doesn't exist
