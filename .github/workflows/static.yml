@@ -38,15 +38,15 @@ jobs:
         with:
           # Upload entire repository
           path: '.'
+              
+      - name: Install dependencies (if any)
+        run: npm ci  # Or npm install if no package.json
           
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-        
-      - name: Install dependencies (if any)
-        run: npm ci  # Or npm install if no package.json
       
       - name: Generate Author Index
         run: node script/authorindex.js
