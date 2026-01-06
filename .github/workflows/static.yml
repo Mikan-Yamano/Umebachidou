@@ -31,6 +31,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies (if any)
+        # Only run if package.json exists
+        run: |
+          if [ -f "package.json" ]; then
+            npm ci
+          else
+            echo "No package.json found, skipping npm install"
+          fi
+        
+      - name: Generate Author Index
+        run: node script/authorindex.js
+        
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
@@ -38,18 +57,6 @@ jobs:
         with:
           # Upload entire repository
           path: '.'
-              
-      - name: Install dependencies (if any)
-        run: npm ci  # Or npm install if no package.json
-          
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-      
-      - name: Generate Author Index
-        run: node script/authorindex.js
         
       - name: Deploy to GitHub Pages
         id: deployment
