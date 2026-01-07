@@ -24,7 +24,7 @@ async function generateAuthorIndex() {
 				  const metaJson = metaMatch[1].trim();
 				  const meta = JSON.parse(metaJson);
 				  
-				  const author = meta['work-author'];
+				  const author = meta['author'];
 				  
 				  if (author) {
 				      if (!authorIndex[author]) {
