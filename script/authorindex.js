@@ -11,62 +11,62 @@ async function generateAuthorIndex() {
 	// Read all HTML files in bookshelf directory
 	const files = fs.readdirSync(bookshelfDir)
 	      .filter(file => file.endsWith('.html')) ;
-		      
-		      for (const file of files) {
-			  const filePath = path.join(bookshelfDir, file);
-			  const html = fs.readFileSync(filePath, 'utf8');
-			  
-			  // Extract metadata from JSON block
-			  const metaMatch = html.match(/<script[^>]*id=["']?page-meta["']?[^>]*>([\s\S]*?)<\/script>/i);
-			  
-			  if (metaMatch) {
-			      try {
-				  const metaJson = metaMatch[1].trim();
-				  const meta = JSON.parse(metaJson);
-				  
-				  const author = meta['author'];
-				  
-				  if (author) {
-				      if (!authorIndex[author]) {
-					  authorIndex[author] = [];
-				      }
-				      
-				      authorIndex[author].push({
-					  title: meta.title || 'Untitled',
-					  url: 'bookshelf/${file}',  // Adjust path as needed
-					  date: meta.date || meta.year || 'Unknown',
-					  file: file
-				      });
-				      
-				      console.log(`✓ ${file} → ${author}`);
-				  } else {
-				      console.log(`⚠️ ${file}: No author found in metadata`);
-				  }
-			      } catch (parseError) {
-				  console.error(`❌ ${file}: Failed to parse metadata`, parseError.message);
-			      }
-			  } else {
-			      console.log(`⚠️ ${file}: No page-meta script found`);
-			  }
-		      }
-		      
-		      // Generate HTML for the author index
-		      const html = generateIndexHTML(authorIndex);
-		      
-		      // Save to file
-		      fs.writeFileSync(outputFile, html);
-		      
-		     } catch (error) {
-			 console.error('Error generating author index:', error);
-			 process.exit(1);
-		     }
-    }
-
-    function generateIndexHTML(authorIndex) {
-	// Sort authors alphabetically
-	const sortedAuthors = Object.keys(authorIndex).sort();
 	
-	let html = `<!DOCTYPE html>
+	for (const file of files) {
+	    const filePath = path.join(bookshelfDir, file);
+	    const html = fs.readFileSync(filePath, 'utf8');
+	    
+	    // Extract metadata from JSON block
+	    const metaMatch = html.match(/<script[^>]*id=["']?page-meta["']?[^>]*>([\s\S]*?)<\/script>/i);
+	    
+	    if (metaMatch) {
+		try {
+		    const metaJson = metaMatch[1].trim();
+		    const meta = JSON.parse(metaJson);
+		    
+		    const author = meta['author'];
+		    
+		    if (author) {
+			if (!authorIndex[author]) {
+			    authorIndex[author] = [];
+			}
+			
+			authorIndex[author].push({
+			    title: meta.title || 'Untitled',
+			    url: 'bookshelf/${file}',  // Adjust path as needed
+			    date: meta.date || meta.year || 'Unknown',
+			    file: file
+			});
+			
+			console.log(`✓ ${file} → ${author}`);
+		    } else {
+			console.log(`⚠️ ${file}: No author found in metadata`);
+		    }
+		} catch (parseError) {
+		    console.error(`❌ ${file}: Failed to parse metadata`, parseError.message);
+		}
+	    } else {
+		console.log(`⚠️ ${file}: No page-meta script found`);
+	    }
+	}
+	
+	// Generate HTML for the author index
+	const html = generateIndexHTML(authorIndex);
+	
+	// Save to file
+	fs.writeFileSync(outputFile, html);
+	
+    } catch (error) {
+	console.error('Error generating author index:', error);
+	process.exit(1);
+    }
+}
+
+function generateIndexHTML(authorIndex) {
+    // Sort authors alphabetically
+    const sortedAuthors = Object.keys(authorIndex).sort();
+    
+    let html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -204,26 +204,26 @@ async function generateAuthorIndex() {
     </header>
     
     <main>`;
-	
-	if (sortedAuthors.length === 0) {
-	    html += `
+    
+    if (sortedAuthors.length === 0) {
+	html += `
         <div class="empty-state">
             <h3>No authors found</h3>
             <p>No books with author metadata were found in the bookshelf directory.</p>
         </div>`;
-	} else {
-	    sortedAuthors.forEach(author => {
-		const books = authorIndex[author];
-		// Sort books by date (newest first)
-		books.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-		
-		html += `
+    } else {
+	sortedAuthors.forEach(author => {
+	    const books = authorIndex[author];
+	    // Sort books by date (newest first)
+	    books.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+	    
+	    html += `
         <section class="author-section">
             <h2 class="author-name">${escapeHtml(author)}</h2>
             <ul class="book-list">`;
-		
-		books.forEach(book => {
-		    html += `
+	    
+	    books.forEach(book => {
+		html += `
                 <li class="book-item">
                     <div>
                         <a href="${escapeHtml(book.url)}" class="book-link">
@@ -236,15 +236,15 @@ async function generateAuthorIndex() {
                         ${book.file ? `<span>📄 ${escapeHtml(book.file)}</span>` : ''}
                     </div>
                 </li>`;
-		});
-		
-		html += `
+	    });
+	    
+	    html += `
             </ul>
         </section>`;
-	    });
-	}
-	
-	html += `
+	});
+    }
+    
+    html += `
     </main>
     
     <footer>
@@ -253,21 +253,18 @@ async function generateAuthorIndex() {
     </footer>
 </body>
 </html>`;
-	
-	return html;
-    }
+    
+    return html;
+}
 
-    function escapeHtml(text) {
-	const div = document ? document.createElement('div') : { textContent: '' };
-	div.textContent = text;
-	return div.innerHTML || text.replace(/[&<>"']/g, char => ({
-	    '&': '&amp;',
-	    '<': '&lt;',
-	    '>': '&gt;',
-	    '"': '&quot;',
-	    "'": '&#39;'
-	}[char]));
-    }
+function escapeHtml(text) {
+    return text
+	.replace(/&/g, "&amp;")
+	.replace(/</g, "&lt;")
+	.replace(/>/g, "&gt;")
+	.replace(/"/g, "&quot;")
+	.replace(/'/g, "&#039;");
+}
 
-    // Run the script
-    generateAuthorIndex();
+// Run the script
+generateAuthorIndex();
