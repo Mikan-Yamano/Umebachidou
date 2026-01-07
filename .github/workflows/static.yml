@@ -39,6 +39,22 @@ jobs:
         
       - name: Generate Author Index
         run: node script/authorindex.js
+
+      - name: Commit generated files
+        run: |
+          git config --local user.email "252320708+Mikan-Yamano@users.noreply.github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Add only the generated author.html file (or other specific files)
+          git add author.html
+          
+          # Check if there are changes before committing
+          if [[ -n $(git status --porcelain) ]]; then
+            git commit -m "Update generated author index [skip ci]"
+            echo "Changes committed"
+          else
+            echo "No changes to commit"
+          fi
         
       - name: Setup Pages
         uses: actions/configure-pages@v5
