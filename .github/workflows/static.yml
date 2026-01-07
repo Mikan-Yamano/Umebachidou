@@ -40,21 +40,46 @@ jobs:
       - name: Generate Author Index
         run: node script/authorindex.js
 
-      - name: Commit generated files
+      - name: Debug - Find generated files
         run: |
-          git config --local user.email "252320708+Mikan-Yamano@users.noreply.github.com"
-          git config --local user.name "GitHub Action"
-          
-          # Add only the generated author.html file (or other specific files)
-          git add author.html
-          
-          # Check if there are changes before committing
-          if [[ -n $(git status --porcelain) ]]; then
-            git commit -m "Update generated author index [skip ci]"
-            echo "Changes committed"
-          else
-            echo "No changes to commit"
-          fi
+          echo "=== Looking for generated HTML files ==="
+          echo "Current directory: $(pwd)"
+          echo ""
+          echo "All files in current directory:"
+          ls -la
+          echo ""
+          echo "Searching recursively for HTML files:"
+          find . -name "*.html" -type f 2>/dev/null || echo "No HTML files found"
+          echo ""
+          echo "Searching for any new files:"
+          find . -type f -newer ../timestamp.txt 2>/dev/null || touch ../timestamp.txt && find . -type f 2>/dev/null | head -20
+          echo ""
+          echo "Checking script output directory:"
+          node -e "
+          const fs = require('fs');
+          console.log('Does authorindex.js exist?', fs.existsSync('script/authorindex.js'));
+          try {
+            const content = fs.readFileSync('script/authorindex.js', 'utf8');
+            // Look for file writing patterns
+            if (content.includes('writeFile')) console.log('Script contains writeFile');
+            if (content.includes('.html')) console.log('Script mentions .html files');
+            if (content.includes('author')) console.log('Script mentions author');
+          } catch(e) {
+            console.log('Cannot read script:', e.message);
+          }
+          "
+        
+      - name: Test file creation
+        run: |
+          echo "=== Testing if we can create files ==="
+          echo "<html>Test file</html>" > test-generated.html
+          ls -la test-generated.html
+          echo "Test file created successfully"
+        
+      - name: Commit any HTML files found
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
         
       - name: Setup Pages
         uses: actions/configure-pages@v5
