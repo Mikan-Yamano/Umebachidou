@@ -11,7 +11,7 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -39,6 +39,21 @@ jobs:
         
       - name: Generate Author Index
         run: node script/authorindex.js
+
+      - name: Commit generated files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          if [[ -n $(git status --porcelain) ]]; then
+            git commit -m "Update generated author index [skip ci]"
+          fi
+        
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
         
       - name: Setup Pages
         uses: actions/configure-pages@v5
