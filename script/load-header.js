@@ -5,7 +5,7 @@ class SiteHeader extends HTMLElement {
       <header class="site-header">
       <nav class="nav-buttons">
 	<button><a href="index.html"/>玄関</a></button>
-<button><a href="bookshelf/Yumeno-Dogura.html"/>本棚</a></button>
+<button><a href="authors.html"/>本棚</a></button>
 <button>御礼</button>
 <button>便り</button>
 </nav>

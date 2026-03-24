@@ -67,140 +67,25 @@ function generateIndexHTML(authorIndex) {
     const sortedAuthors = Object.keys(authorIndex).sort();
     
     let html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Author Index - Bookshelf</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #f8f9fa;
-        }
-        
-        header {
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        
-        .stats {
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-        
-        .author-section {
-            background: white;
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.2s ease;
-        }
-        
-        .author-section:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        
-        .author-name {
-            color: #3498db;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .book-list {
-            list-style: none;
-        }
-        
-        .book-item {
-            padding: 12px 0;
-            border-bottom: 1px solid #f8f9fa;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .book-item:last-child {
-            border-bottom: none;
-        }
-        
-        .book-title {
-            font-weight: 500;
-            color: #2c3e50;
-        }
-        
-        .book-meta {
-            color: #6c757d;
-            font-size: 0.9em;
-            display: flex;
-            gap: 15px;
-        }
-        
-        .book-link {
-            color: #3498db;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        
-        .book-link:hover {
-            color: #2980b9;
-            text-decoration: underline;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #6c757d;
-        }
-        
-        footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e9ecef;
-            color: #6c757d;
-            font-size: 0.9em;
-            text-align: center;
-        }
-        
-        @media (max-width: 768px) {
-            .book-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-            
-            .book-meta {
-                flex-wrap: wrap;
-            }
-        }
-    </style>
-</head>
+<html lang="ja">
+  
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/Umebachidou/">
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>INDEX</title>
+  </head>
+
+     <style>
+    body {
+	background-image: url('image/background.jpg');
+    }
+  </style>
+
 <body>
     <header>
-        <h1>📚 Bookshelf Author Index</h1>
-        <div class="stats">
-            ${sortedAuthors.length} authors • 
-            ${sortedAuthors.reduce((total, author) => total + authorIndex[author].length, 0)} books •
-            Generated on ${new Date().toLocaleDateString()}
-        </div>
+        <h1>Author Index</h1>
     </header>
     
     <main>`;
@@ -231,9 +116,9 @@ function generateIndexHTML(authorIndex) {
                         </a>
                     </div>
                     <div class="book-meta">
-                        ${book.date ? `<span>📅 ${escapeHtml(book.date)}</span>` : ''}
-                        ${book.version ? `<span>v${escapeHtml(book.version)}</span>` : ''}
-                        ${book.file ? `<span>📄 ${escapeHtml(book.file)}</span>` : ''}
+                        ${book.year ? `<span> ${escapeHtml(book.year)}</span>` : ''}
+                        ${book.scenario ? `<span>v${escapeHtml(book.scenario)}</span>` : ''}
+                        ${book.file ? `<span> ${https://mikan-yamano.github.io/Umebachidou/book.file}</span>` : ''}
                     </div>
                 </li>`;
 	    });
