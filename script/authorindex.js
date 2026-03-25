@@ -118,7 +118,7 @@ function generateIndexHTML(authorIndex) {
                     <div class="book-meta">
                         ${book.year ? `<span> ${escapeHtml(book.year)}</span>` : ''}
                         ${book.scenario ? `<span>v${escapeHtml(book.scenario)}</span>` : ''}
-                        ${book.file ? `<span> ${https://mikan-yamano.github.io/Umebachidou/book.file}</span>` : ''}
+                        ${book.file ? `<span><a href="https://mikan-yamano.github.io/Umebachidou/${book.file}">{Page}</a></span>` : ''}
                     </div>
                 </li>`;
 	    });
