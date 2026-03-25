@@ -35,7 +35,7 @@ async function generateAuthorIndex() {
 			    title: meta.title || 'Untitled',
 			    url: 'https://mikan-yamano.github.io/Umebachidou/meta.pageUrl', 
 			    date: meta.year,
-			    file: file
+			    file: file,
 			    scene: meta.scenario
 			});
 			
