@@ -84,13 +84,14 @@ function generateIndexHTML(authorIndex) {
   </style>
 
 <body>
-    <header>
-        <h1>Author Index</h1>
-    </header>
-
+  
  <div class="text-box">
       <script src="script/load-header.js" defer></script>
       <site-header></site-header>
+
+ <header>
+        <h1>Author Index</h1>
+    </header>
     
     <main>`;
     
@@ -105,13 +106,18 @@ function generateIndexHTML(authorIndex) {
 	    const books = authorIndex[author];
 	    // Sort books by date (newest first)
 	    books.sort((a, b) => (b.year || '').localeCompare(a.year || ''));
+
+	     html += `
+            <section class="author-section">
+            <h2 class="author-name">${escapeHtml(author)}</h2>
+            <ul class="book-list">`;
 	    
 	    books.forEach(book => {
 		html += `
                 <li class="book-item">
                     <div>
                         <a href="${book.pageUrl}">
-                            <span> class="book-title">${escapeHtml(book.title)}</span>
+                            <span>${escapeHtml(book.title)}</span>
                         </a>
                     </div>
                     <div class="book-meta">
@@ -130,11 +136,7 @@ function generateIndexHTML(authorIndex) {
     
     html += `
     </main>
-    
-    <footer>
-        <p>Index automatically generated from metadata in HTML files.</p>
-        <p>Last updated: ${new Date().toLocaleString()}</p>
-    </footer>
+
 </body>
 </html>`;
     
