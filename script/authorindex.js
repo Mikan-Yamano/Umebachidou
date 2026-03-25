@@ -33,9 +33,10 @@ async function generateAuthorIndex() {
 			
 			authorIndex[author].push({
 			    title: meta.title || 'Untitled',
-			    url: 'bookshelf/${file}',  // Adjust path as needed
-			    date: meta.date || meta.year || 'Unknown',
+			    url: 'https://mikan-yamano.github.io/Umebachidou/meta.pageUrl', 
+			    date: meta.year,
 			    file: file
+			    scene: meta.scenario
 			});
 			
 			console.log(`✓ ${file} → ${author}`);
@@ -74,7 +75,7 @@ function generateIndexHTML(authorIndex) {
     <base href="/Umebachidou/">
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="css/style.css" />
-    <title>INDEX</title>
+    <title>梅鉢堂|</title>
   </head>
 
      <style>
@@ -103,26 +104,26 @@ function generateIndexHTML(authorIndex) {
         </div>`;
     } else {
 	sortedAuthors.forEach(author => {
-	    const books = authorIndex[author];
-	    // Sort books by date (newest first)
-	    books.sort((a, b) => (b.year || '').localeCompare(a.year || ''));
+	    const works = authorIndex[author];
+	    // Sort by date (newest first)
+	    works.sort((a, b) => (b.year || '').localeCompare(a.year || ''));
 
 	     html += `
             <section class="author-section">
             <h2 class="author-name">${escapeHtml(author)}</h2>
             <ul class="book-list">`;
 	    
-	    books.forEach(book => {
+	    works.forEach(work => {
 		html += `
                 <li class="book-item">
                     <div>
-                        <a href="${book.pageUrl}">
-                            <span>${escapeHtml(book.title)}</span>
+                        <a href="${work.url}">
+                            <span>${escapeHtml(work.title)}</span>
                         </a>
                     </div>
                     <div class="book-meta">
-                        ${book.year ? `<span> ${escapeHtml(book.year)}</span>` : ''}
-                        ${book.scenario ? `<span>v${escapeHtml(book.scenario)}</span>` : ''}
+                        ${work.date ? `<span> ${escapeHtml(work.date)}</span>` : ''}
+                        ${work.scene ? `<span>v${escapeHtml(work.scene)}</span>` : ''}
                     </div>
 </div>
                 </li>`;
