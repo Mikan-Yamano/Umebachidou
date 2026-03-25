@@ -87,6 +87,10 @@ function generateIndexHTML(authorIndex) {
     <header>
         <h1>Author Index</h1>
     </header>
+
+ <div class="text-box">
+      <script src="script/load-header.js" defer></script>
+      <site-header></site-header>
     
     <main>`;
     
@@ -100,26 +104,21 @@ function generateIndexHTML(authorIndex) {
 	sortedAuthors.forEach(author => {
 	    const books = authorIndex[author];
 	    // Sort books by date (newest first)
-	    books.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-	    
-	    html += `
-        <section class="author-section">
-            <h2 class="author-name">${escapeHtml(author)}</h2>
-            <ul class="book-list">`;
+	    books.sort((a, b) => (b.year || '').localeCompare(a.year || ''));
 	    
 	    books.forEach(book => {
 		html += `
                 <li class="book-item">
                     <div>
-                        <a href="${escapeHtml(book.url)}" class="book-link">
-                            <span class="book-title">${escapeHtml(book.title)}</span>
+                        <a href="${book.pageUrl}">
+                            <span> class="book-title">${escapeHtml(book.title)}</span>
                         </a>
                     </div>
                     <div class="book-meta">
                         ${book.year ? `<span> ${escapeHtml(book.year)}</span>` : ''}
                         ${book.scenario ? `<span>v${escapeHtml(book.scenario)}</span>` : ''}
-                        ${book.file ? `<span><a href="https://mikan-yamano.github.io/Umebachidou/${book.file}">{Page}</a></span>` : ''}
                     </div>
+</div>
                 </li>`;
 	    });
 	    
