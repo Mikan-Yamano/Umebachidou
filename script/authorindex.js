@@ -33,7 +33,7 @@ async function generateAuthorIndex() {
 			
 			authorIndex[author].push({
 			    title: meta.title || 'Untitled',
-			    url: 'https://mikan-yamano.github.io/Umebachidou/meta.pageUrl', 
+			    url: meta.pageUrl, 
 			    date: meta.year,
 			    file: file,
 			    scene: meta.scenario
@@ -75,7 +75,7 @@ function generateIndexHTML(authorIndex) {
     <base href="/Umebachidou/">
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="css/style.css" />
-    <title>梅鉢堂|</title>
+    <title>梅鉢堂|作品一覧</title>
   </head>
 
      <style>
@@ -91,7 +91,7 @@ function generateIndexHTML(authorIndex) {
       <site-header></site-header>
 
  <header>
-        <h1>Author Index</h1>
+        <h1>作者別</h1>
     </header>
     
     <main>`;
@@ -117,13 +117,13 @@ function generateIndexHTML(authorIndex) {
 		html += `
                 <li class="book-item">
                     <div>
-                        <a href="${work.url}">
+                        <a href="https://mikan-yamano.github.io/Umebachidou/${work.url}">
                             <span>${escapeHtml(work.title)}</span>
                         </a>
                     </div>
                     <div class="book-meta">
                         ${work.date ? `<span> ${escapeHtml(work.date)}</span>` : ''}
-                        ${work.scene ? `<span>v${escapeHtml(work.scene)}</span>` : ''}
+                        ${work.scene ? `<span>${escapeHtml(work.scene)}</span>` : ''}
                     </div>
 </div>
                 </li>`;
